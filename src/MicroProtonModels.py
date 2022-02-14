@@ -11,6 +11,9 @@ import pandas as pd
 from scipy import special as spf
 from scipy.optimize import curve_fit
 from scipy.interpolate import CubicSpline
+import pkg_resources
+
+DATA_PATH = pkg_resources.resource_filename('pyMicroDose', 'nist/')
 
 def linearFunction(x, m, b):
     return b + m * x
@@ -263,7 +266,7 @@ class Proton:
 
 class ProtonStoppingPower:
     def __init__(self):
-        self.astarData = pd.read_csv('nist/pstardata.csv')
+        self.astarData = pd.read_csv(DATA_PATH+'pstardata.csv')
         
     def getStoppingPower(self, E, mode = 'electronic'):
         logEE = np.log10(self.astarData.Energy)

@@ -6,5 +6,5 @@ Created on Wed Nov 17 15:27:24 2021
 @author: alejandrobertolet
 """
 
-from MicroAlphaModels import *
-from MicroProtonModels import *
+from pyMicroDose.MicroAlphaModels import *
+from pyMicroDose.MicroProtonModels import *
