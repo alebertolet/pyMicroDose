@@ -22,14 +22,14 @@ class StoppingPower:
         
     def getStoppingPower(self, E, mode = 'electronic'):
         if type(E) == int or type(E) == float:
-            return self.getStoppingPowerValue(E, mode)
+            return self.__getStoppingPowerValue(E, mode)
         if type(E) == list or type(E) == np.ndarray:
             sps = []
             for e in E:
-                sps.append(self.getStoppingPowerValue(e, mode))
+                sps.append(self.__getStoppingPowerValue(e, mode))
             return np.array(sps)
         
-    def getStoppingPowerValue(self, E, mode = 'electronic'):
+    def __getStoppingPowerValue(self, E, mode = 'electronic'):
         logE = np.log10(E)
         if mode in self.optionsElectronic:
             csInterp = CubicSpline(self.logEE, self.starData.ElecStopPower/10) #To kev/um
@@ -43,14 +43,14 @@ class StoppingPower:
     
     def getEnergyForStoppingPower(self, sp, mode = 'electronic', side = 'high'):
         if type(sp) == int or type(sp) == float:
-            return self.getEnergyForStoppingPowerValue(sp, mode, side)
+            return self.__getEnergyForStoppingPowerValue(sp, mode, side)
         if type(sp) == list or type(sp) == np.ndarray:
             es = []
             for s in sp:
-                es.append(self.getEnergyForStoppingPowerValue(s, mode, side))
+                es.append(self.__getEnergyForStoppingPowerValue(s, mode, side))
             return np.array(es)
     
-    def getEnergyForStoppingPowerValue(self, sp, mode = 'electronic', side = 'high'):
+    def __getEnergyForStoppingPowerValue(self, sp, mode = 'electronic', side = 'high'):
         if sp > self.maxStopPowerVal:
             print("There is no energy for such a high stopping power value.")
             return
