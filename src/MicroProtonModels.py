@@ -7,13 +7,9 @@ Created on Sat Jan  9 12:08:36 2021
 """
 
 import numpy as np
-import pandas as pd
 from scipy import special as spf
 from scipy.optimize import curve_fit
 from scipy.interpolate import CubicSpline
-import pkg_resources
-
-DATA_PATH = pkg_resources.resource_filename('pyMicroDose', 'nist/')
 
 def linearFunction(x, m, b):
     return b + m * x
@@ -262,25 +258,4 @@ class Proton:
         # Convert y into J/m
         yJm = y * 1e6 * e * 1e3
         return yJm / (rho * np.pi * r**2)
-
-
-class ProtonStoppingPower:
-    def __init__(self):
-        self.astarData = pd.read_csv(DATA_PATH+'pstardata.csv')
-        
-    def getStoppingPower(self, E, mode = 'electronic'):
-        logEE = np.log10(self.astarData.Energy)
-        logE = np.log10(E)
-        optionsElectronic = ['electronic', 'Electronic', 'e', 'E']
-        optionsNuclear = ['nuclear', 'Nuclear', 'n', 'N']
-        optionsTotal = ['total', 'Total', 't', 'T']
-        if mode in optionsElectronic:
-            csInterp = CubicSpline(logEE, self.astarData.ElecStopPower/10) #To kev/um
-            return csInterp(logE)
-        if mode in optionsNuclear:
-            csInterp = CubicSpline(logEE, self.astarData.NucStopPower/10) #To kev/um
-            return csInterp(logE)
-        if mode in optionsTotal:
-            csInterp = CubicSpline(logEE, self.astarData.TotalStopPower/10) #To kev/um
-            return csInterp(logE)
         

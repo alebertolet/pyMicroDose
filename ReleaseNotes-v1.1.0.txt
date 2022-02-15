@@ -1,0 +1,4 @@
+Release notes
+-------------
+Added interpolation to get energy corresponding to a given stopping power
+Stopping power classes reorganized in a single one using inheritance
