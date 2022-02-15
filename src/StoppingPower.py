@@ -21,6 +21,15 @@ class StoppingPower:
         self.optionsTotal = ['total', 'Total', 't', 'T']
         
     def getStoppingPower(self, E, mode = 'electronic'):
+        if type(E) == int or type(E) == float:
+            return self.getStoppingPowerValue(E, mode)
+        if type(E) == list or type(E) == np.ndarray:
+            sps = []
+            for e in E:
+                sps.append(self.getStoppingPowerValue(e, mode))
+            return np.array(sps)
+        
+    def getStoppingPowerValue(self, E, mode = 'electronic'):
         logE = np.log10(E)
         if mode in self.optionsElectronic:
             csInterp = CubicSpline(self.logEE, self.starData.ElecStopPower/10) #To kev/um
@@ -33,8 +42,20 @@ class StoppingPower:
             return csInterp(logE)
     
     def getEnergyForStoppingPower(self, sp, mode = 'electronic', side = 'high'):
+        if type(sp) == int or type(sp) == float:
+            return self.getEnergyForStoppingPowerValue(sp, mode, side)
+        if type(sp) == list or type(sp) == np.ndarray:
+            es = []
+            for s in sp:
+                es.append(self.getEnergyForStoppingPowerValue(s, mode, side))
+            return np.array(es)
+    
+    def getEnergyForStoppingPowerValue(self, sp, mode = 'electronic', side = 'high'):
         if sp > self.maxStopPowerVal:
             print("There is no energy for such a high stopping power value.")
+            return
+        if sp < self.minStopPowerVal:
+            print("There is no energy for such a low stopping power value.")
             return
         if mode in self.optionsElectronic:
             imax = np.argmax(self.starData.ElecStopPower)
@@ -67,11 +88,13 @@ class AlphaStoppingPower(StoppingPower):
     def __init__(self):
         self.starData = pd.read_csv(DATA_PATH+'astardata.csv')
         self.maxStopPowerVal = 226.21
+        self.minStopPowerVal = 1.56
         StoppingPower.__init__(self)
     
 class ProtonStoppingPower(StoppingPower):
     def __init__(self):
         self.starData = pd.read_csv(DATA_PATH+'pstardata.csv')
         self.maxStopPowerVal = 82.41
+        self.minStopPowerVal = 0.2001
         StoppingPower.__init__(self)
         

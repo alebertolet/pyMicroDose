@@ -16,7 +16,7 @@ URL = 'https://github.com/alebertolet/pymicrodose'
 EMAIL = 'abertoletreina@mgh.harvard.edu'
 AUTHOR = 'Alejandro Bertolet'
 REQUIRES_PYTHON = '>=3.6.0'
-VERSION = '1.1.0'
+VERSION = '1.1.1'
 
 # Required packages for this module to be executed
 REQUIRED = ['numpy', 'pandas', 'scipy']

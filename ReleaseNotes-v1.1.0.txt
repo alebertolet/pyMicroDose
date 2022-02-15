@@ -2,3 +2,7 @@ Release notes
 -------------
 Added interpolation to get energy corresponding to a given stopping power
 Stopping power classes reorganized in a single one using inheritance
+
+V1.1.1
+Allowing calculation of stopping power for list and arrays
+Adding minimum value for stopping power
