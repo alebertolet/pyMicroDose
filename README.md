@@ -3,8 +3,8 @@ Repository for analytical calculations in microdosimetry.
 
 Instalation:
 --------------
-1. Download the file pymicrodose-1.1.1.tar.gz
-2. Install it on the Terminal using pip install pymicrodose-1.1.1.tar.gz
+1. Download the file pymicrodose-1.1.2.tar.gz
+2. Install it on the Terminal using pip install pymicrodose-1.1.2.tar.gz
 
 Examples of use:
 ----------------

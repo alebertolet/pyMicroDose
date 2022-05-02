@@ -16,6 +16,7 @@ DATA_PATH = pkg_resources.resource_filename('pyMicroDose', 'nist/')
 class StoppingPower:
     def __init__(self):
         self.logEE = np.log10(self.starData.Energy)
+        self.logEER = np.log10(self.rangeData.Energy)
         self.optionsElectronic = ['electronic', 'Electronic', 'e', 'E']
         self.optionsNuclear = ['nuclear', 'Nuclear', 'n', 'N']
         self.optionsTotal = ['total', 'Total', 't', 'T']
@@ -49,6 +50,20 @@ class StoppingPower:
             for s in sp:
                 es.append(self.__getEnergyForStoppingPowerValue(s, mode, side))
             return np.array(es)
+        
+    def getCSDARange(self, E):
+        if type(E) == int or type(E) == float:
+            return self.__getRangeValue(E)
+        if type(E) == list or type(E) == np.ndarray:
+            r = []
+            for e in E:
+                r.append(self.__getRangeValue(e))
+            return np.array(r)
+    
+    def __getRangeValue(self, E):
+        logE = np.log10(E)
+        csInterp = CubicSpline(self.logEER, self.rangeData.CSDARange*1e4) # to um
+        return csInterp(logE)
     
     def __getEnergyForStoppingPowerValue(self, sp, mode = 'electronic', side = 'high'):
         if sp > self.maxStopPowerVal:
@@ -87,6 +102,7 @@ class StoppingPower:
 class AlphaStoppingPower(StoppingPower):
     def __init__(self):
         self.starData = pd.read_csv(DATA_PATH+'astardata.csv')
+        self.rangeData = pd.read_csv(DATA_PATH+'alpharange.csv')
         self.maxStopPowerVal = 226.21
         self.minStopPowerVal = 1.56
         StoppingPower.__init__(self)
@@ -94,6 +110,7 @@ class AlphaStoppingPower(StoppingPower):
 class ProtonStoppingPower(StoppingPower):
     def __init__(self):
         self.starData = pd.read_csv(DATA_PATH+'pstardata.csv')
+        self.rangeData = pd.read_csv(DATA_PATH+'protonrange.csv')
         self.maxStopPowerVal = 82.41
         self.minStopPowerVal = 0.2001
         StoppingPower.__init__(self)
